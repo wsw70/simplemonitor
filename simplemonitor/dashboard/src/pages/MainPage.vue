@@ -1,7 +1,13 @@
 <template>
     <q-page class="col  ">
 
-        <q-table flat :rows="rows" :columns="columns" />
+        <q-table flat :rows="rows" :columns="columns">
+            <template v-slot:body-cell="props">
+                <q-td :props="props" :class="lineClass(props.row)">
+                    {{ props.value }}
+                </q-td>
+            </template>
+        </q-table>
 
 
 
@@ -13,7 +19,6 @@
 import { PropType } from 'vue';
 import { apiResponse } from 'src/model';
 import { computed } from 'vue';
-import { toRef } from 'vue';
 import { onMounted } from 'vue';
 
 
@@ -24,7 +29,7 @@ const props = defineProps({
         default: <apiResponse>{}
     }
 })
-const monitors = toRef(props.data.monitors)
+const monitors = computed(() => props.data.monitors)
 
 const columns = [
     {
@@ -32,7 +37,6 @@ const columns = [
         label: 'Monitor',
         field: 'monitor',
         sortable: true,
-
     },
     {
         name: 'status',
@@ -81,6 +85,10 @@ const rows = computed(() => {
     }
     return rows
 })
+
+const lineClass = (row) => {
+    return row.status === 'OK' ? 'bg-green-2' : 'bg-red-2'
+}
 
 onMounted(() => {
 
