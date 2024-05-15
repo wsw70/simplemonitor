@@ -21,6 +21,16 @@ import { apiResponse } from 'src/model';
 import { computed } from 'vue';
 import { onMounted } from 'vue';
 
+type Row = {
+    monitor: string,
+    status: string,
+    virtual_fail_count: number,
+    result: string,
+    first_failure_time: string,
+    last_run_duration: number,
+    dependencies: string,
+}
+
 
 const props = defineProps({
     data: {
@@ -86,7 +96,7 @@ const rows = computed(() => {
     return rows
 })
 
-const lineClass = (row) => {
+const lineClass = (row: Row) => {
     return row.status === 'OK' ? 'bg-green-2' : 'bg-red-2'
 }
 
