@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
-    <q-header elevated>
-      <q-toolbar>
+    <q-header>
+      <q-toolbar class="items">
         <q-toolbar-title>
           Simplemonitor Dashboard
         </q-toolbar-title>
@@ -18,6 +18,7 @@
 
 <script setup lang="ts">
 import MainPage from 'src/pages/MainPage.vue';
+import SummaryIndicators from 'src/components/SummaryIndicators.vue'
 import { apiResponse } from 'src/model'
 import { ref } from 'vue';
 import { onMounted } from 'vue';
