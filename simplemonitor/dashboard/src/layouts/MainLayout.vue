@@ -1,12 +1,14 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <q-header>
-      <q-toolbar class="items">
-        <q-toolbar-title>
+      <q-toolbar class="items flex justify-start">
+        <q-toolbar-title class="col-shrink">
           Simplemonitor Dashboard
         </q-toolbar-title>
-        <DataStatus :data="data"></DataStatus>
         <SummaryIndicators :data="data"></SummaryIndicators>
+        <q-space></q-space>
+        <DataStatus :data="data"></DataStatus>
+        <div>aaa</div>
       </q-toolbar>
     </q-header>
 
