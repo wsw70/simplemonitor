@@ -5,7 +5,7 @@
         <q-toolbar-title>
           Simplemonitor Dashboard
         </q-toolbar-title>
-
+        <DataStatus :data="data"></DataStatus>
         <SummaryIndicators :data="data"></SummaryIndicators>
       </q-toolbar>
     </q-header>
@@ -19,6 +19,7 @@
 <script setup lang="ts">
 import MainPage from 'src/pages/MainPage.vue';
 import SummaryIndicators from 'src/components/SummaryIndicators.vue'
+import DataStatus from 'src/components/DataStatus.vue'
 import { apiResponse } from 'src/model'
 import { ref } from 'vue';
 import { onMounted } from 'vue';
