@@ -18,7 +18,7 @@ import { differenceInSeconds, formatDuration } from 'date-fns';
 import { intervalToDuration } from 'date-fns';
 import { ComputedRef } from 'vue';
 
-const MAX_TIME_BETWEEN_CHECKS = 65
+const MAX_SECONDS_BETWEEN_CHECKS = 65
 
 const props = defineProps({
     data: {
@@ -31,5 +31,5 @@ const props = defineProps({
     },
 })
 const whenUpdated: ComputedRef<string> = computed(() => formatDuration(intervalToDuration({ start: props.data.generated, end: new Date() })))
-const dataIsCurrent: ComputedRef<boolean> = computed(() => differenceInSeconds(new Date(), props.data.generated) < MAX_TIME_BETWEEN_CHECKS)
+const dataIsCurrent: ComputedRef<boolean> = computed(() => differenceInSeconds(new Date(), props.data.generated) < MAX_SECONDS_BETWEEN_CHECKS)
 </script>
