@@ -1,7 +1,7 @@
 <template>
     <q-page class="col  ">
 
-        <q-table flat :rows="rows" :columns="columns" row-key="monitor">
+        <q-table flat :rows="rows" :columns="columns" row-key="monitor" v-model:pagination="pagination" hide-pagination>
             <template v-slot:body="props">
                 <q-tr :props="props" :class="lineClass(props.row)">
                     <q-td :props="props" key="monitor">
@@ -26,6 +26,9 @@
 
             </template>
         </q-table>
+        <div class="row justify-center q-mt-md" v-if="pagesNumber > 1">
+            <q-pagination v-model="pagination.page" color="grey-8" :max="pagesNumber" size="sm" />
+        </div>
     </q-page>
 
 </template>
@@ -35,6 +38,7 @@ import { PropType } from 'vue';
 import { apiResponse } from 'src/model';
 import { computed } from 'vue';
 import { onMounted } from 'vue';
+import { ref } from 'vue';
 import { formatDuration } from 'date-fns';
 import { intervalToDuration } from 'date-fns';
 import { isValid } from 'date-fns';
@@ -48,7 +52,6 @@ type Row = {
     last_run_duration: number,
     dependencies: string,
 }
-
 
 const props = defineProps({
     data: {
@@ -83,6 +86,7 @@ const columns = [
         label: 'First Failed',
         field: 'first_failure_time',
         sortable: true,
+        style: 'width: 500px',  // we want the clumn to be fixed size, otherwise the duration text that chnages will make it jump around
     },
     {
         name: 'last_run_duration',
@@ -119,6 +123,15 @@ const lineClass = (row: Row): string => {
 }
 
 const humanizeDate = (date: Date): string => isValid(date) ? formatDuration(intervalToDuration({ start: date, end: new Date() })) + ' ago' : ''
+
+const pagination = ref({
+    sortBy: 'virtual_fail_count',
+    descending: true,
+    page: 1,
+    rowsPerPage: 10,
+})
+const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
+
 
 onMounted(() => {
 
