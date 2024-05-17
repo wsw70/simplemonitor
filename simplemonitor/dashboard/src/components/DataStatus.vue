@@ -1,5 +1,6 @@
 <template>
-    <div class="flex flex-center bg-white q-pa-xs rounded-borders">
+    <div class="flex flex-center bg-white q-pa-xs rounded-borders" style="width: 20em;">
+        <div v-if="!dataIsCurrent" class="text-red-10 q-mr-sm">late</div>
         <div :class="{ 'text-green-10': dataIsCurrent, 'text-red-10': !dataIsCurrent }" class="q-mr-sm">{{ whenUpdated }}</div>
         <q-icon v-if="dataIsCurrent" name="event_available" color="green" size="md" class="q-mr-sm">
             <q-tooltip>Tooltip text</q-tooltip>

@@ -27,7 +27,6 @@ import { onMounted } from 'vue';
 import { parseISO } from 'date-fns';
 import { useInterval } from 'quasar'
 
-
 const data = ref<apiResponse>({} as apiResponse)
 const getData = () => {
   fetch('src/assets/status.json')
