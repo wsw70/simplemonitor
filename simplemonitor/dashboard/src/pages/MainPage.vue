@@ -1,29 +1,13 @@
 <template>
     <q-page class="col  ">
 
-        <q-table flat :rows="rows" :columns="columns" row-key="monitor" v-model:pagination="pagination" hide-pagination>
+        <q-table flat :rows="rows" row-key="monitor" v-model:pagination="pagination" hide-pagination>
             <template v-slot:body="props">
                 <q-tr :props="props" :class="lineClass(props.row)">
-                    <q-td :props="props" key="monitor">
-                        {{ props.row.monitor }}
-                    </q-td>
-                    <!-- <q-td :props="props" key="status">
-                        <q-icon :name="selectStatusIcon(props.row.status)" />
-                    </q-td> -->
-                    <q-td :props="props" key="virtual_fail_count">
-                        {{ props.row.virtual_fail_count > 0 ? props.row.virtual_fail_count : '' }}
-                    </q-td>
-                    <q-td :props="props" key="first_failure_time">
-                        {{ humanizeDate(props.row.first_failure_time) }}
-                    </q-td>
-                    <q-td :props="props" key="last_run_duration">
-                        {{ props.row.last_run_duration }}
-                    </q-td>
-                    <q-td :props="props" key="dependencies">
-                        {{ props.row.dependencies }}
+                    <q-td v-for="col in colsToDisplay(props.cols as QTableProps['columns'][])" :key="col.name">
+                        {{ props.row[col.name] }}
                     </q-td>
                 </q-tr>
-
             </template>
         </q-table>
         <div class="row justify-center q-mt-md" v-if="pagesNumber > 1">
@@ -42,16 +26,8 @@ import { ref } from 'vue';
 import { formatDuration } from 'date-fns';
 import { intervalToDuration } from 'date-fns';
 import { isValid } from 'date-fns';
-
-type Row = {
-    monitor: string,
-    status: string,
-    virtual_fail_count: number,
-    result: string,
-    first_failure_time: Date,
-    last_run_duration: number,
-    dependencies: string,
-}
+import { Monitor } from 'src/model'
+import { QTableProps } from 'quasar'
 
 const props = defineProps({
     data: {
@@ -62,67 +38,33 @@ const props = defineProps({
 })
 const monitors = computed(() => props.data.monitors)
 
-const columns = [
-    {
-        name: 'monitor',
-        label: 'Monitor',
-        field: 'monitor',
-        sortable: true,
-    },
-    // {
-    //     name: 'status',
-    //     label: 'Status',
-    //     field: 'status',
-    //     sortable: true,
-    // },
-    {
-        name: 'virtual_fail_count',
-        label: 'Fail Count',
-        field: 'virtual_fail_count',
-        sortable: true,
-    },
-    {
-        name: 'first_failure_time',
-        label: 'First Failed',
-        field: 'first_failure_time',
-        sortable: true,
-        style: 'width: 500px',  // we want the clumn to be fixed size, otherwise the duration text that chnages will make it jump around
-    },
-    {
-        name: 'last_run_duration',
-        label: 'last Run Duration (s)',
-        field: 'last_run_duration',
-        sortable: true,
-    },
-    {
-        name: 'dependencies',
-        label: 'Dependencies',
-        field: 'dependencies',
-        sortable: true,
-    },
-]
+const labelsToDisplay = ['name', 'result']
+
+
 
 const rows = computed(() => {
-    const rows: Row[] = []
+    const rows: Monitor[] = []
     for (const monitor in monitors.value) {
-        rows.push({
-            monitor: monitor,
-            status: monitors.value[monitor].status,
-            virtual_fail_count: monitors.value[monitor].virtual_fail_count,
-            result: monitors.value[monitor].result,
-            first_failure_time: monitors.value[monitor].first_failure_time,
-            last_run_duration: monitors.value[monitor].last_run_duration,
-            dependencies: monitors.value[monitor].dependencies.join(' | ')
-        })
+        // console.log(monitor, monitors.value[monitor])
+        // rows.push({
+        //     monitor: monitor,
+        //     status: monitors.value[monitor].status,
+        //     virtual_fail_count: monitors.value[monitor].virtual_fail_count,
+        //     result: monitors.value[monitor].result,
+        //     first_failure_time: monitors.value[monitor].first_failure_time,
+        //     last_run_duration: monitors.value[monitor].last_run_duration,
+        //     dependencies: monitors.value[monitor].dependencies.join(' | ')
+        // })
+        rows.push(monitors.value[monitor])
     }
     return rows
 })
 
-const lineClass = (row: Row): string => {
+const lineClass = (row: Monitor): string => {
     return row.status === 'OK' ? 'bg-green-2' : 'bg-red-2'
 }
 
-const humanizeDate = (date: Date): string => isValid(date) ? formatDuration(intervalToDuration({ start: date, end: new Date() })) + ' ago' : ''
+// const humanizeDate = (date: Date): string => isValid(date) ? formatDuration(intervalToDuration({ start: date, end: new Date() })) + ' ago' : ''
 
 const pagination = ref({
     sortBy: 'virtual_fail_count',
@@ -132,6 +74,20 @@ const pagination = ref({
 })
 const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
 
+const colsToDisplay = (cols: QTableProps['columns'][]) => {
+    console.log(cols)
+    const ret: QTableProps['columns'][] = []
+    cols.forEach((col) => {
+        if (labelsToDisplay.includes(col.name)) {
+            ret.push(col)
+        }
+
+    })
+
+    return ret
+}
+
+// const labelsFiltered = monitors.value.filter(x: Monitor => labelsToDisplay.includes(x.name))
 
 onMounted(() => {
 
