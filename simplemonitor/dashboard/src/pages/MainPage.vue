@@ -1,12 +1,22 @@
 <template>
     <q-page class="col  ">
 
-        <q-table flat :rows="rows" row-key="monitor" v-model:pagination="pagination" hide-pagination>
+        <q-table flat :rows="monitors" row-key="name" v-model:pagination="pagination" hide-pagination>
             <template v-slot:body="props">
+                <!-- we define how each line will look like -->
                 <q-tr :props="props" :class="lineClass(props.row)">
-                    <q-td v-for="col in colsToDisplay(props.cols as QTableProps['columns'][])" :key="col.name">
+                    <!-- this is a list of columns for each row -->
+                    <q-td v-for="col in colsToDisplay(props.cols as QTableProps['columns'][])" :key="col?.name">
+                        <!-- this is the value that will be displayed in a cell -->
                         {{ props.row[col.name] }}
                     </q-td>
+                </q-tr>
+            </template>
+            <template v-slot:header="props">
+                <q-tr :props="props">
+                    <q-th v-for="col in labelsToDisplay" :key="col" :props="props" class="text-bold text-purple">
+                        {{ col }}
+                    </q-th>
                 </q-tr>
             </template>
         </q-table>
@@ -23,11 +33,13 @@ import { apiResponse } from 'src/model';
 import { computed } from 'vue';
 import { onMounted } from 'vue';
 import { ref } from 'vue';
-import { formatDuration } from 'date-fns';
-import { intervalToDuration } from 'date-fns';
-import { isValid } from 'date-fns';
+// import { formatDuration } from 'date-fns';
+// import { intervalToDuration } from 'date-fns';
+// import { isValid } from 'date-fns';
 import { Monitor } from 'src/model'
 import { QTableProps } from 'quasar'
+
+// this is still colored
 
 const props = defineProps({
     data: {
@@ -36,29 +48,14 @@ const props = defineProps({
         default: <apiResponse>{}
     }
 })
-const monitors = computed(() => props.data.monitors)
 
+// this is not colored anymore
+
+// monitors is an array of Monitors, each element will be a line in the table
+const monitors = computed(() => Object.values(props.data.monitors || {}))
+// only a subset of labels will be displayed for each line
 const labelsToDisplay = ['name', 'result']
 
-
-
-const rows = computed(() => {
-    const rows: Monitor[] = []
-    for (const monitor in monitors.value) {
-        // console.log(monitor, monitors.value[monitor])
-        // rows.push({
-        //     monitor: monitor,
-        //     status: monitors.value[monitor].status,
-        //     virtual_fail_count: monitors.value[monitor].virtual_fail_count,
-        //     result: monitors.value[monitor].result,
-        //     first_failure_time: monitors.value[monitor].first_failure_time,
-        //     last_run_duration: monitors.value[monitor].last_run_duration,
-        //     dependencies: monitors.value[monitor].dependencies.join(' | ')
-        // })
-        rows.push(monitors.value[monitor])
-    }
-    return rows
-})
 
 const lineClass = (row: Monitor): string => {
     return row.status === 'OK' ? 'bg-green-2' : 'bg-red-2'
@@ -72,7 +69,7 @@ const pagination = ref({
     page: 1,
     rowsPerPage: 10,
 })
-const pagesNumber = computed(() => Math.ceil(rows.value.length / pagination.value.rowsPerPage))
+const pagesNumber = computed(() => Math.ceil(monitors.value.length / pagination.value.rowsPerPage))
 
 const colsToDisplay = (cols: QTableProps['columns'][]) => {
     console.log(cols)
