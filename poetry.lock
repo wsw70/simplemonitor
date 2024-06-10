@@ -685,13 +685,13 @@ pyflakes = ">=2.5.0,<2.6.0"
 
 [[package]]
 name = "freezegun"
-version = "1.4.0"
+version = "1.5.0"
 description = "Let your Python tests travel through time"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "freezegun-1.4.0-py3-none-any.whl", hash = "sha256:55e0fc3c84ebf0a96a5aa23ff8b53d70246479e9a68863f1fcac5a3e52f19dd6"},
-    {file = "freezegun-1.4.0.tar.gz", hash = "sha256:10939b0ba0ff5adaecf3b06a5c2f73071d9678e507c5eaedb23c761d56ac774b"},
+    {file = "freezegun-1.5.0-py3-none-any.whl", hash = "sha256:ec3f4ba030e34eb6cf7e1e257308aee2c60c3d038ff35996d7475760c9ff3719"},
+    {file = "freezegun-1.5.0.tar.gz", hash = "sha256:200a64359b363aa3653d8aac289584078386c7c3da77339d257e46a01fb5c77c"},
 ]
 
 [package.dependencies]
@@ -1131,17 +1131,17 @@ files = [
 
 [[package]]
 name = "ping3"
-version = "4.0.5"
+version = "4.0.8"
 description = "A pure python3 version of ICMP ping implementation using raw socket."
 optional = false
 python-versions = ">=3.5"
 files = [
-    {file = "ping3-4.0.5-py3-none-any.whl", hash = "sha256:87f662c80761dbe95314b0ace1f0e06a74605bb3e079693dce337aba12dde26b"},
-    {file = "ping3-4.0.5.tar.gz", hash = "sha256:1f09185e89321436524996b212d203d3cab5ad22687de7464570f1c7fb9dc051"},
+    {file = "ping3-4.0.8-py3-none-any.whl", hash = "sha256:b5c294851968b4229e9af69d252778241cb84221594b436a8677419c31925594"},
+    {file = "ping3-4.0.8.tar.gz", hash = "sha256:9ab460eb57f006b71f977a693d157215aabd6bbcbc6cd6428b6951eaae0c2875"},
 ]
 
 [package.extras]
-dev = ["build", "pycodestyle", "wheel"]
+dev = ["build", "twine"]
 
 [[package]]
 name = "platformdirs"
@@ -1220,13 +1220,13 @@ files = [
 
 [[package]]
 name = "pyaarlo"
-version = "0.8.0.4"
+version = "0.8.0.6"
 description = "PyAarlo is a library that provides asynchronous access to Arlo security cameras."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "pyaarlo-0.8.0.4-py3-none-any.whl", hash = "sha256:b302e9f707e4f4aa5da2bba41ede7a7d30c787da7647d50cf4dd4713e0be6ca8"},
-    {file = "pyaarlo-0.8.0.4.tar.gz", hash = "sha256:ff0fe3f325a31e2572abdca9e1362bbad8144a86d1732b528983c39df6684bd8"},
+    {file = "pyaarlo-0.8.0.6-py3-none-any.whl", hash = "sha256:f379893bb5e5333ee83a620951884a7be7a85e1bc75d5355ae02d68a81359485"},
+    {file = "pyaarlo-0.8.0.6.tar.gz", hash = "sha256:c7019eb0becd2c9aea794f30dae1025b62df657593898d204e1f0a5977841577"},
 ]
 
 [package.dependencies]
