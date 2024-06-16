@@ -100,10 +100,12 @@ class MonitorRemoteSSH(Monitor):
         with paramiko.SSHClient() as client:
             client.set_missing_host_key_policy(paramiko.AutoAddPolicy)
             try:
+                # https://github.com/paramiko/paramiko/issues/2048#issuecomment-1516124834
+                pkey = paramiko.RSAKey.from_private_key_file(self.ssh_private_key_path)
                 client.connect(
                     self.target_hostname,
                     username=self.ssh_username,
-                    key_filename=self.ssh_private_key_path,
+                    pkey=pkey,
                     port=self.target_port,
                 )
             except TimeoutError:
